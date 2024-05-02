@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Downloader</title>
+  
+    <style>
+        /* Common styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #0c0909; /* Text color */
+        }
+
+        .header {
+            background-color: #0056b3; /* Header background color */
+            padding: 10px;
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header .navigation ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .header .navigation li {
+            margin-left: 20px;
+        }
+
+        .header .navigation a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .header .navigation a:hover {
+            color: #004080;
+        }
+
+        .search-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #0056b3; /* Button background color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-box button:hover {
+            background-color: #004080;
+        }
+
+        /* Container styles */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            width: fit-content; /* Adjust width to fit content */
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%; /* Make the image width 100% of its container */
+            max-width: 200px; /* Set max-width to limit image size */
+            height: auto; /* Automatically adjust height to maintain aspect ratio */
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            animation-name: modalFadeIn;
+            animation-duration: 0.5s;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>PDF Downloader</h1>
+    <div class="navigation">
+        <ul>
+            <li><a href="#" onclick="openModal('aboutModal')">About Us</a></li>
+            <li><a href="file:///C:/Users/srisanth.k/OneDrive/Documents/my%20own%20project%201/new%20111.html?q1=B&q2=A" target="_blank">Quiz</a></li>
+            <li><a href="#" onclick="openModal('contactModal')">Contact Us</a></li>
+            <li><a href="file:///C:/Users/srisanth.k/OneDrive/Documents/my%20own%20project%201/login%202.html" onclick="openModal('loginModal')">Login</a></li>
+        </ul>
+    </div>
+    <div class="search-box">
+        <input id="searchInput" type="text" placeholder="Search PDF here...">
+        <button onclick="searchPDFs()">Search</button>
+    </div>
+</div>
+
+<div class="container" id="homeTab">
+    <!-- Responsive Cards for Novels and Storybooks -->
+    <div class="card" onclick="openPDF('novel1.pdf')">
+        <img src="nov1.jpg" alt="Novel 1">
+        <p>Novel 1</p>
+    </div>
+    <div class="card" onclick="openPDF('novel2.pdf')">
+        <img src="nov2.jpg" alt="Novel 2">
+        <p>Novel 2</p>
+    </div>
+    <div class="card" onclick="openPDF('novel3.pdf')">
+        <img src="nov3.jpg" alt="Novel 3">
+        <p>Novel 3</p>
+    </div>
+    <div class="card" onclick="openPDF('novel4.pdf')">
+        <img src="nov4.jpg" alt="Novel 4">
+        <p>Novel 4</p>
+    </div>
+    <div class="card" onclick="openPDF('novel5.pdf')">
+        <img src="nov5.jpg" alt="Novel 5">
+        <p>Novel 5</p>
+    </div>
+</div>
+
+<!-- About Us Modal -->
+<div id="aboutModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('aboutModal')">&times;</span>
+        <h2>About Us</h2>
+        <p>Welcome to PDF Downloader. We provide a wide range of PDF books for download.</p>
+    </div>
+</div>
+
+<!-- Contact Us Modal -->
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('contactModal')">&times;</span>
+        <h2>Contact Us</h2>
+        <p>If you have any questions or suggestions, feel free to contact us at srisanth123gmail.com (or) contact us on 1234567890</p>
+    </div>
+</div>
+
+<script>
+    const searchIcon = document.querySelector('.search-icon');
+    const searchBox = document.getElementById('searchBox');
+
+    function toggleSearchBox() {
+        searchBox.style.display = searchBox.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function openPDF(pdfLink) {
+        window.open(pdfLink, "_blank");
+    }
+
+    // Sample PDF data, replace this with your actual data source
+    const pdfData = [
+        { standard: "11th commerce", link: "https://drive.google.com/file/d/1suwHNMck1Io3stkH8pXMO1ey5_0ljnoR/view" },
+        { standard: "2nd", link: "2nd_STD.pdf" },
+        { standard: "3rd", link: "3rd_STD.pdf" },
+        // Add more standards as needed
+    ];
+
+    function searchPDFs() {
+        const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
+        const searchBox = document.getElementById("searchBox");
+
+        // Find matching PDFs
+        const matchedPDFs = pdfData.filter(pdf => pdf.standard.toLowerCase().includes(searchInput));
+
+        // Hide the search box
+        searchBox.style.display = "none";
+
+        // Display PDF links
+        const pdfResults = document.createElement("div");
+        pdfResults.innerHTML = "<h2>Search Results</h2>";
+
+        matchedPDFs.forEach(pdf => {
+            const pdfLink = document.createElement("a");
+            pdfLink.href = pdf.link;
+            pdfLink.textContent = `PDF for ${pdf.standard}`;
+            pdfLink.setAttribute("target", "_blank"); // Open link in new tab
+            pdfResults.appendChild(pdfLink);
+            pdfResults.appendChild(document.createElement("br"));
+        });
+
+        document.body.appendChild(pdfResults);
+    }
+
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    // Close the modal when clicking outside of it
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

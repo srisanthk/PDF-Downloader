@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 210vh;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            width: 90%;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-bottom: 10px;
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            align-self: center;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .correct {
+            color: #4CAF50;
+        }
+
+        .incorrect {
+            color: #f44336;
+        }
+
+        .correct-answer {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Student Quiz</h1>
+        <h2>Subject: Mathematics</h2>
+        <h3>Grade Levels: Normal</h3>
+        
+        <form id="quizForm">
+            <!-- Question 1 -->
+            <div class="question" data-correct-answer="A">
+                <p>1. What is the result of 2 + 2?</p>
+                <label>
+                    <input type="radio" name="q1" value="A"> 4
+                </label>
+                <label>
+                    <input type="radio" name="q1" value="B"> 3
+                </label>
+                <label>
+                    <input type="radio" name="q1" value="C"> 5
+                </label>
+                <label>
+                    <input type="radio" name="q1" value="D"> 6
+                </label>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" data-correct-answer="C">
+                <p>2. What is the square root of 25?</p>
+                <label>
+                    <input type="radio" name="q2" value="A"> 3
+                </label>
+                <label>
+                    <input type="radio" name="q2" value="B"> 4
+                </label>
+                <label>
+                    <input type="radio" name="q2" value="C"> 5
+                </label>
+                <label>
+                    <input type="radio" name="q2" value="D"> 6
+                </label>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" data-correct-answer="B">
+                <p>3. What is the value of pi (&#960;) rounded to two decimal places?</p>
+                <label>
+                    <input type="radio" name="q3" value="A"> 3.12
+                </label>
+                <label>
+                    <input type="radio" name="q3" value="B"> 3.14
+                </label>
+                <label>
+                    <input type="radio" name="q3" value="C"> 3.16
+                </label>
+                <label>
+                    <input type="radio" name="q3" value="D"> 3.18
+                </label>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question" data-correct-answer="D">
+                <p>4. What is the result of 4 * 4?</p>
+                <label>
+                    <input type="radio" name="q4" value="A"> 12
+                </label>
+                <label>
+                    <input type="radio" name="q4" value="B"> 16
+                </label>
+                <label>
+                    <input type="radio" name="q4" value="C"> 20
+                </label>
+                <label>
+                    <input type="radio" name="q4" value="D"> 24
+                </label>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question" data-correct-answer="C">
+                <p>5. What is 2^4?</p>
+                <label>
+                    <input type="radio" name="q5" value="A"> 8
+                </label>
+                <label>
+                    <input type="radio" name="q5" value="B"> 12
+                </label>
+                <label>
+                    <input type="radio" name="q5" value="C"> 16
+                </label>
+                <label>
+                    <input type="radio" name="q5" value="D"> 20
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <input type="submit" value="Submit">
+
+            <!-- Feedback Section -->
+            <div id="feedback" class="feedback"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("quizForm").onsubmit = function(event) {
+            event.preventDefault();
+
+            // Retrieve user answers
+            var userAnswers = {};
+            var questions = document.querySelectorAll('.question');
+            questions.forEach(function(question, index) {
+                var selectedOption = question.querySelector('input[name="q' + (index + 1) + '"]:checked');
+                if (selectedOption) {
+                    userAnswers['q' + (index + 1)] = selectedOption.value;
+                }
+            });
+
+            // Check if all questions are answered
+            if (Object.keys(userAnswers).length !== questions.length) {
+                alert("Please answer all questions.");
+                return;
+            }
+
+            // Check answers
+            var correctAnswers = 0;
+            questions.forEach(function(question, index) {
+                var correctAnswer = question.dataset.correctAnswer;
+                var userAnswer = userAnswers['q' + (index + 1)];
+                if (userAnswer === correctAnswer) {
+                    correctAnswers++;
+                }
+            });
+
+            // Calculate score
+            var totalQuestions = questions.length;
+            var score = (correctAnswers / totalQuestions) * 100;
+
+            // Display feedback
+            var feedbackElement = document.getElementById("feedback");
+            feedbackElement.innerHTML = "You scored " + score.toFixed(2) + "%. ";
+            feedbackElement.style.display = "block";
+
+            // Display correct answers
+            questions.forEach(function(question, index) {
+                var correctAnswer = question.dataset.correctAnswer;
+                var correctAnswerLabel = question.querySelector('input[value="' + correctAnswer + '"]').parentNode.textContent;
+                var correctAnswerElement = document.createElement('div');
+                correctAnswerElement.classList.add('correct-answer');
+                correctAnswerElement.innerHTML = "Correct answer for question " + (index + 1) + ": " + correctAnswerLabel;
+                question.appendChild(correctAnswerElement);
+            });
+
+            if (score >= 50) {
+                feedbackElement.innerHTML += "Congratulations!";
+                feedbackElement.classList.add("correct");
+            } else {
+                feedbackElement.innerHTML += "Keep practicing!";
+                feedbackElement.classList.add("incorrect");
+            }
+        }
+    </script>
+</body>
+</html>
